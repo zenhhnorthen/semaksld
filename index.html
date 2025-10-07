@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilih Mode - Sistem Semakan SLD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="https://www.jpj.gov.my/wp-content/uploads/2022/04/JPJLogo.png" type="image/png">
+    <style>
+        :root {
+            --primary: #1a237e;
+            --primary-light: #303f9f;
+            --secondary: #34a853;
+            --accent: #ff6b35;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --gray: #5f6368;
+            --border: #dadce0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a237e 0%, #303f9f 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .logo-container {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        .logo-container img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: contain;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* MODE SELECTION CARDS */
+        .mode-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .mode-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--secondary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .mode-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .mode-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .mode-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .mode-card:hover .mode-icon {
+            transform: scale(1.1);
+            background: var(--secondary);
+            color: white;
+        }
+
+        .mode-card h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .mode-card p {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .device-list {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .device-list ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .device-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .device-list i {
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--secondary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background: transparent;
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* RECOMMENDATION BADGE */
+        .recommendation {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        /* FOOTER */
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* AUTO DETECTION MESSAGE */
+        .auto-detection {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            animation: fadeInDown 1s ease 0.5s both;
+        }
+
+        .auto-detection i {
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .auto-detection p {
+            text-align: left;
+            flex: 1;
+        }
+
+        .auto-link {
+            color: var(--secondary);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--secondary);
+        }
+
+        .auto-link:hover {
+            border-bottom-style: solid;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .mode-selection {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .mode-card {
+                padding: 30px 20px;
+            }
+            
+            .mode-icon {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+            
+            .mode-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .auto-detection {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .auto-detection p {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .logo-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .logo-container img {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .mode-card {
+                padding: 25px 15px;
+            }
+
+            .auto-detection {
+                padding: 15px;
+            }
+        }
+
+        /* LOADING SPINNER */
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top: 3px solid white;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="logo-container">
+                <img src="https://www.jpj.gov.my/wp-content/uploads/2022/04/JPJLogo.png" alt="Logo JPJ" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiByeD0iNjAiIGZpbGw9IiNmZmZmZmYiLz4KPHRleHQgeD0iNjAiIHk9IjY1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiMxYTIzN2UiPkxvZ28gSlBKPC90ZXh0Pgo8L3N2Zz4K'">
+            </div>
+            <h1>SISTEM SEMAKAN STATUS SLD</h1>
+            <p>Pilih mod yang sesuai dengan peranti anda untuk pengalaman semakan yang lebih baik</p>
+        </div>
+
+        <!-- AUTO DETECTION MESSAGE -->
+        <div class="auto-detection">
+            <i class="fas fa-magic"></i>
+            <p>
+                <strong>Sistem mengesan anda menggunakan:</strong> 
+                <span id="detected-device">Peranti</span>. 
+                <a href="#" id="auto-redirect-link" class="auto-link">Klik sini untuk terus ke mod yang disyorkan</a>
+            </p>
+        </div>
+
+        <!-- MODE SELECTION -->
+        <div class="mode-selection">
+            <!-- MOBILE MODE CARD -->
+            <div class="mode-card" onclick="redirectToMobile()">
+                <div class="recommendation" id="mobile-recommendation">
+                    Disyorkan
+                </div>
+                <div class="mode-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h2>Mod Mudah Alih</h2>
+                <p>Direka khas untuk peranti mudah alih dengan antara muka yang dioptimumkan untuk skrin sentuh</p>
+                
+                <div class="device-list">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Smartphone & Tablet</li>
+                        <li><i class="fas fa-check-circle"></i> Antara muka sentuh</li>
+                        <li><i class="fas fa-check-circle"></i> Navigasi mudah</li>
+                        <li><i class="fas fa-check-circle"></i> Muat pantas</li>
+                    </ul>
+                </div>
+                
+                <a href="https://sld-data.short.gy/semaksld" class="btn" onclick="event.stopPropagation()">
+                    <i class="fas fa-external-link-alt"></i> Buka Mod Mudah Alih
+                </a>
+            </div>
+
+            <!-- DESKTOP MODE CARD -->
+            <div class="mode-card" onclick="redirectToDesktop()">
+                <div class="recommendation" id="desktop-recommendation">
+                    Lengkap
+                </div>
+                <div class="mode-icon">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <h2>Mod Desktop</h2>
+                <p>Pengalaman penuh dengan semua ciri lanjutan untuk komputer riba dan desktop</p>
+                
+                <div class="device-list">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Komputer & Laptop</li>
+                        <li><i class="fas fa-check-circle"></i> Paparan penuh</li>
+                        <li><i class="fas fa-check-circle"></i> Ciri-ciri lanjutan</li>
+                        <li><i class="fas fa-check-circle"></i> Multitasking</li>
+                    </ul>
+                </div>
+                
+                <a href="https://sld-data.short.gy/semaksld-desktop" class="btn" onclick="event.stopPropagation()">
+                    <i class="fas fa-external-link-alt"></i> Buka Mod Desktop
+                </a>
+            </div>
+        </div>
+
+        <!-- LOADING MESSAGE -->
+        <div id="loading-message" style="display: none;">
+            <div class="spinner"></div>
+            <p>Mengalihkan ke Sistem SLD...</p>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>&copy; 2025 Jabatan Pengangkutan Jalan Malaysia. Semua hak cipta terpelihara.</p>
+        </div>
+    </div>
+
+    <script>
+        // Device detection and auto-redirect
+        function detectDevice() {
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isTablet = /iPad|Android|Tablet/i.test(navigator.userAgent);
+            
+            if (isMobile || isTablet) {
+                return 'mobile';
+            } else {
+                return 'desktop';
+            }
+        }
+
+        function updateDeviceDetection() {
+            const deviceType = detectDevice();
+            const deviceElement = document.getElementById('detected-device');
+            const autoRedirectLink = document.getElementById('auto-redirect-link');
+            const mobileRecommendation = document.getElementById('mobile-recommendation');
+            const desktopRecommendation = document.getElementById('desktop-recommendation');
+            
+            if (deviceType === 'mobile') {
+                deviceElement.textContent = 'Peranti Mudah Alih';
+                autoRedirectLink.href = 'https://sld-data.short.gy/semaksld';
+                autoRedirectLink.textContent = 'Klik sini untuk terus ke Mod Mudah Alih';
+                mobileRecommendation.style.display = 'block';
+                desktopRecommendation.style.display = 'none';
+            } else {
+                deviceElement.textContent = 'Peranti Desktop';
+                autoRedirectLink.href = 'https://sld-data.short.gy/semaksld-desktop';
+                autoRedirectLink.textContent = 'Klik sini untuk terus ke Mod Desktop';
+                mobileRecommendation.style.display = 'none';
+                desktopRecommendation.style.display = 'block';
+            }
+        }
+
+        // Redirect functions dengan loading
+        function redirectToMobile() {
+            document.getElementById('loading-message').style.display = 'block';
+            setTimeout(() => {
+                window.location.href = 'https://sld-data.short.gy/semaksld';
+            }, 500);
+        }
+
+        function redirectToDesktop() {
+            document.getElementById('loading-message').style.display = 'block';
+            setTimeout(() => {
+                window.location.href = 'https://sld-data.short.gy/semaksld-desktop';
+            }, 500);
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDeviceDetection();
+            
+            // Auto-redirect after 8 seconds jika user tidak pilih
+            setTimeout(function() {
+                const deviceType = detectDevice();
+                document.getElementById('loading-message').style.display = 'block';
+                setTimeout(() => {
+                    if (deviceType === 'mobile') {
+                        window.location.href = 'https://sld-data.short.gy/semaksld';
+                    } else {
+                        window.location.href = 'https://sld-data.short.gy/semaksld-desktop';
+                    }
+                }, 1000);
+            }, 8000);
+        });
+
+        // Keyboard navigation support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '1') {
+                redirectToMobile();
+            } else if (e.key === '2') {
+                redirectToDesktop();
+            }
+        });
+    </script>
+</body>
+</html>
