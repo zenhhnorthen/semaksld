@@ -466,7 +466,7 @@
                 desktopRecommendation.style.display = 'none';
             } else {
                 deviceElement.textContent = 'Peranti Desktop';
-                autoRedirectLink.href = 'https://script.google.com/macros/s/AKfycbyoq2gXeID6chPX6SWeKVu6GRl7C9-sUcrAVNQu5f-tRLb4wk2JdOLdV6u6uZ8zAmE/exec';
+                autoRedirectLink.href = 'https://sld-data.short.gy/semaksld-desktop';
                 autoRedirectLink.textContent = 'Klik sini untuk terus ke Mod Desktop';
                 mobileRecommendation.style.display = 'none';
                 desktopRecommendation.style.display = 'block';
@@ -484,7 +484,7 @@
         function redirectToDesktop() {
             document.getElementById('loading-message').style.display = 'block';
             setTimeout(() => {
-                window.location.href = 'https://script.google.com/macros/s/AKfycbyoq2gXeID6chPX6SWeKVu6GRl7C9-sUcrAVNQu5f-tRLb4wk2JdOLdV6u6uZ8zAmE/exec';
+                window.location.href = 'https://sld-data.short.gy/semaksld-desktop';
             }, 100);
         }
 
@@ -500,7 +500,7 @@
                     if (deviceType === 'mobile') {
                         window.location.href = 'https://sld-data.short.gy/semaksld';
                     } else {
-                        window.location.href = 'https://script.google.com/macros/s/AKfycbyoq2gXeID6chPX6SWeKVu6GRl7C9-sUcrAVNQu5f-tRLb4wk2JdOLdV6u6uZ8zAmE/exec';
+                        window.location.href = 'https://sld-data.short.gy/semaksld-desktop';
                     }
                 }, 300);
             }, 30000);
